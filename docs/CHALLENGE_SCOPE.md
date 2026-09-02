@@ -2,9 +2,9 @@
 
 ## Pre-existing product
 
-AIR 4.0 is an existing architectural AI workspace. Before the WebMCP Challenge it already contained the human-facing Editor, Gallery, image generation, AREA/Draw interaction, Moodboard, Mix, Context, Finish and Video product surfaces.
+AIR 4.0 is an existing architectural AI workspace. Before the WebMCP Challenge it already contained the human-facing Editor, Gallery, image generation, AREA/Draw interaction, Moodboard, Mix, Context, Finish, and Video product surfaces.
 
-Those existing production capabilities are not claimed here as challenge-period inventions.
+Those existing production capabilities are not claimed here as Challenge-period inventions.
 
 ## Challenge-period work
 
@@ -13,15 +13,14 @@ The WebMCP Challenge work added an agent-native capability layer around the exis
 The main additions were:
 
 - WebMCP registration of high-level AIR actions.
-- Direct latest-design loading without Gallery navigation.
+- Direct design loading without Gallery-style navigation.
 - Structural canvas/context inspection.
 - Agent-authored visible Draw markup with no image generation.
 - Structured sketch context that can be read back after human edits.
 - Agent-authored AREA proposals with no image generation.
-- Localized image execution that reuses AIR's native AREA workflow.
-- Structural Moodboard, Mix, persistent Context and Video access.
+- Localized image execution that reuses AIR's native workflow.
+- Structural Moodboard, Mix, persistent Context, and Video access.
 - Reuse of native Finish actions.
-- An opt-in `?demo=1` caption layer for challenge recording, driven only by real AIR/WebMCP events.
 
 ## Core product boundary
 
@@ -32,32 +31,32 @@ The extension follows four boundaries:
 3. **Persistent context changes are explicit.** One-off edits do not silently mutate long-term project context.
 4. **The agent keeps semantic judgement.** AIR exposes concise actions and current state; the connected model decides when to use them rather than following a large regex/routing ruleset.
 
-## Shared Markup flow
+## Shared markup flow
 
-The challenge's central new interaction is bidirectional shared markup:
+The Challenge's central new interaction is bidirectional shared markup:
 
 ```text
 Agent reads current design
         ↓
-Agent draws proposal on AIR canvas
+Agent marks or sketches on AIR canvas
         ↓
-Human sees / edits proposal
+Human sees / edits the proposal
         ↓
-AIR publishes updated structured sketch
+AIR publishes updated structured context
         ↓
 Agent reads the human change
         ↓
-Agent proposes AREA
+Human confirms the design decision
         ↓
-Human approves
-        ↓
-AIR executes localized generation
+AIR executes the agreed action
 ```
 
-During end-to-end testing, Draw and AREA proposals did not change History or credits before generation. Only the approved image generation created a History entry and consumed credits.
+The key boundary is that visible markup can exist independently of generation. The design conversation can happen on the artifact before execution.
 
-## Production vs public repository
+## Production vs. public repository
 
-The commercial AIR 4.0 repository contains unrelated proprietary application code, credentials/infrastructure assumptions, provider integrations and business logic. It remains private.
+The commercial AIR 4.0 repository contains unrelated proprietary application code, infrastructure assumptions, provider integrations, and business logic. It remains private.
 
-This Challenge Edition publishes the WebMCP interaction pattern, challenge-period implementation material and runnable reference code under Apache-2.0. It does **not** relicense the full AIR 4.0 product.
+This Challenge Edition publishes the WebMCP interaction pattern, Challenge-period implementation material, and runnable reference code under Apache-2.0. It does **not** relicense the full AIR 4.0 product.
+
+No production credentials, API keys, account data, or judge/test credentials are included in this repository.
