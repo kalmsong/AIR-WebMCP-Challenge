@@ -1,47 +1,48 @@
 # AIR × WebMCP Challenge Edition
 
-**A shared architectural design canvas for humans and agents.**
+**An agent-native architectural design workspace where humans and AI can work on the same live design canvas.**
 
-AIR is an architectural AI workspace. For the WebMCP Challenge, AIR was extended so an AI agent can participate in the same live design canvas as the architect instead of imitating browser clicks.
+AIR is an architectural AI workspace. For the WebMCP Challenge, AIR was extended so an AI agent can use the application's real design capabilities and state instead of imitating browser clicks.
 
 > The agent doesn't imitate AIR's UI. It uses AIR's capabilities.
 
-## What the challenge work adds
+## What the Challenge work adds
 
-The production AIR 4.0 application existed before the challenge. The challenge-period work focuses on the WebMCP extension created after August 25, 2026:
+AIR 4.0 existed before the Challenge. The work developed after August 25, 2026 focuses on the new WebMCP capability layer:
 
-- read the live architectural canvas as structured context;
-- place visible Draw annotations before generation;
-- let the architect draw back on the same canvas;
-- expose the combined human + agent sketch structurally;
-- propose a visible AREA without generating;
-- execute only after the visible design intent is confirmed;
-- reuse AIR product state and native workflows rather than browser-coordinate automation.
+- read the current architectural canvas as structured context;
+- load and work with design state without human-style UI navigation;
+- place visible Draw and AREA markup without generating an image;
+- let the architect modify the same shared canvas;
+- expose human + agent markup back to the agent as structured context;
+- keep communication and generation as separate actions;
+- execute an agreed design change only after human confirmation;
+- expose higher-level AIR workspace capabilities through semantic actions rather than coordinate automation.
 
-The design loop is:
+The core interaction is:
 
 **Understand → Mark up → Discuss → Agree → Execute**
 
-## Live AIR demo
+## Live integration
 
-Challenge demo URL:
+The complete WebMCP integration runs inside the private AIR 4.0 product:
 
-`https://img.airtect.kr/editor?demo=1`
+`https://img.airtect.kr/editor`
 
-The live product uses the full private AIR 4.0 application and requires an AIR account. Submission testing credentials can be supplied separately. `?demo=1` only adds short event-driven recording captions; it does not add extra WebMCP capabilities.
+The live application uses AIR's production editor, state, image-generation workflow, authentication, persistence, and product services. Those proprietary systems are intentionally not duplicated in this repository.
 
-## Runnable public-safe reference
+## Runnable open-source reference
 
-This repository also contains a small, independently runnable Challenge Edition that demonstrates the shared-canvas WebMCP pattern without publishing AIR's commercial provider integrations, credentials, persistence layer, or unrelated product code.
+This repository contains an independently runnable reference implementation of the shared-canvas WebMCP pattern. It preserves the interaction contract while excluding AIR's commercial provider integrations, credentials, database layer, billing logic, and unrelated product code.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Then open the local URL in a browser/environment with WebMCP support. The canvas also remains manually usable when WebMCP is not detected.
+Then open the local URL in a browser or environment with WebMCP support. The canvas remains manually usable when WebMCP is not detected.
 
-For a production build:
+For a production check:
 
 ```bash
 npm run check
@@ -52,37 +53,39 @@ npm run preview
 
 | Tool | Purpose |
 | --- | --- |
-| `air_get_canvas_context` | Reads normalized Draw, AREA, approval and recent execution state. |
-| `air_apply_canvas_markup` | Lets the agent show Draw or AREA markup. It explicitly does **not** generate. |
-| `air_execute_design_request` | Demonstrates the agreed execution boundary after visible AREA confirmation. |
+| `air_get_canvas_context` | Reads normalized Draw, AREA, approval, and recent execution state. |
+| `air_apply_canvas_markup` | Places agent-authored Draw or AREA markup without generation. |
+| `air_execute_design_request` | Demonstrates the explicit execution boundary after human confirmation. |
 
-The public reference app uses normalized image coordinates (`0..1`) so geometry is independent of browser size. Human Draw strokes and agent Draw strokes are stored in the same state and returned together as structured context.
+The reference app uses normalized image coordinates (`0..1`) so shared geometry is independent of browser size. Human and agent markup live in the same structured state and can be read back through WebMCP.
 
-The final execution in this public reference intentionally applies a visible material tint instead of calling AIR's private commercial image-provider stack. The production AIR demo uses AIR's real native generation workflow.
+The final execution in this reference intentionally applies a visible material treatment instead of calling AIR's private commercial image-provider stack. The live AIR integration uses AIR's native generation workflow.
 
-## Core interaction
+## Architecture
 
 ```text
 Architect intent
       ↓
  ChatGPT / Agent
       ↓  WebMCP registerTool
-AIR shared canvas
+AIR capability layer
+      ↓
+Shared design canvas
   ↕           ↕
 Draw         AREA
   ↕           ↕
 Human edits / confirms
       ↓
-Native AIR execution
+AIR execution boundary
 ```
 
-The important boundary is that **markup is communication, not generation**. An agent can point, sketch and discuss before any image-generation action is taken.
+The important product boundary is that **markup is communication, not generation**. An agent can point, sketch, inspect, and discuss before any image-generation action is taken.
 
 ## Source map
 
 ```text
 src/
-├─ main.ts       # runnable shared architectural canvas + human Draw/AREA input
+├─ main.ts       # shared architectural canvas + human Draw/AREA input
 ├─ store.ts      # shared structured state
 ├─ types.ts      # public data contracts
 ├─ webmcp.ts     # direct registerTool capability adapter
@@ -94,36 +97,42 @@ scripts/
 docs/
 ├─ ARCHITECTURE.md
 ├─ CHALLENGE_SCOPE.md
-├─ DEMO.md
 └─ IMPLEMENTATION_MAP.md
 ```
 
-## Repository scope
+## Production vs. public repository
 
-The commercial AIR 4.0 production repository remains separate and private. This repository publishes only the Challenge Edition material under the Apache License 2.0.
+The commercial AIR 4.0 repository remains separate and private. This repository publishes only the Challenge Edition material under the Apache License 2.0.
 
 It intentionally excludes:
 
 - provider API keys and credentials;
-- AIR account data and database integrations;
+- AIR account or judge/test-account data;
+- database and billing configuration;
 - proprietary generation/provider routing internals;
 - unrelated commercial AIR 4.0 product code.
 
-See [`docs/CHALLENGE_SCOPE.md`](docs/CHALLENGE_SCOPE.md) for the pre-existing vs. challenge-period boundary and [`docs/IMPLEMENTATION_MAP.md`](docs/IMPLEMENTATION_MAP.md) for how this reference maps to the live product.
+See [`docs/CHALLENGE_SCOPE.md`](docs/CHALLENGE_SCOPE.md) for the pre-existing vs. Challenge-period boundary and [`docs/IMPLEMENTATION_MAP.md`](docs/IMPLEMENTATION_MAP.md) for how this reference maps to the live product.
 
-## Validation status
+## Validation
 
-The live AIR WebMCP workflow has been tested end-to-end for:
+The shared-canvas workflow was validated end-to-end for the following boundaries:
 
-- agent Draw shown without generation;
-- no History/credit change before generation;
-- user-modified sketch read back by the agent;
-- agent AREA shown without generation;
-- human approval followed by localized generation only;
-- History/model metadata update at generation time;
-- credit deduction only when generation executes.
+- agent markup is visible without triggering generation;
+- human modifications can be read back as structured context;
+- AREA can remain a communication surface before execution;
+- explicit confirmation separates design dialogue from execution;
+- agent actions use registered capabilities rather than browser-coordinate clicks.
 
-The public reference implementation can be checked with `npm run check`.
+Run the public reference verification with:
+
+```bash
+npm run check
+```
+
+## Security
+
+No production credentials, API keys, account data, or test-account credentials belong in this repository. See [`SECURITY.md`](SECURITY.md).
 
 ## License
 
